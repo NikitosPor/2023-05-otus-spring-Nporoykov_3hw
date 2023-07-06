@@ -1,13 +1,14 @@
-package ru.otus.springboot;
+package ru.otus.spgboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
-public class SpringbootApplication {
+public class SpgbootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringbootApplication.class, args);
+        SpringApplication.run(SpgbootApplication.class, args);
     }
 
 }

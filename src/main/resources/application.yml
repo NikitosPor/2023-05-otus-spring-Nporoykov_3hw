@@ -1,0 +1,8 @@
+application:
+  locale: ru_RU
+  defFilePath: /questions_
+  minRightCount: 3
+
+  spring:
+    main:
+      web-application-type: NONE
