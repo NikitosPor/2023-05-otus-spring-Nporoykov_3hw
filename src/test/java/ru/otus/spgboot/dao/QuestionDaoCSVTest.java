@@ -18,17 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class QuestionDaoCSVTest {
 
-    private final List<Question> LIST_OF_QUESTIONS = new ArrayList<>();
-    private static final Question QUESTION_1 = new Question("Who was a king?", List.of(new Answer("a)Ted", true), new Answer("b)Teena", false), new Answer("c)Kastro", false)));
-    private static final Question QUESTION_2 = new Question("Where were this done?", List.of(new Answer("a)Home", false), new Answer("b)Street", true), new Answer("c)Sky", false)));
+    private final List<Question> listOfQuestions = new ArrayList<>();
+    private final Question QUESTION_1 = new Question("Who was a king?", List.of(new Answer("a)Ted", true), new Answer("b)Teena", false), new Answer("c)Kastro", false)));
+    private final Question QUESTION_2 = new Question("Where were this done?", List.of(new Answer("a)Home", false), new Answer("b)Street", true), new Answer("c)Sky", false)));
 
     @Autowired
     private QuestionDao questionDao;
 
     @BeforeEach
     void setUp() {
-        LIST_OF_QUESTIONS.add(QUESTION_1);
-        LIST_OF_QUESTIONS.add(QUESTION_2);
+        listOfQuestions.add(QUESTION_1);
+        listOfQuestions.add(QUESTION_2);
     }
 
     @DisplayName("Extract list of questions")
@@ -41,14 +41,14 @@ class QuestionDaoCSVTest {
             List<Answer> validatedListOfAnswers = testList.get(finalI).getListOfAnswers();
 
             assertAll("question",
-                    () -> assertEquals(LIST_OF_QUESTIONS.get(finalI).getQuestion(), validatedQuestion),
-                    () -> assertEquals(LIST_OF_QUESTIONS.get(finalI).getListOfAnswers().get(0).getAnswer(), validatedListOfAnswers.get(0).getAnswer()),
-                    () -> assertEquals(LIST_OF_QUESTIONS.get(finalI).getListOfAnswers().get(1).getAnswer(), validatedListOfAnswers.get(1).getAnswer()),
-                    () -> assertEquals(LIST_OF_QUESTIONS.get(finalI).getListOfAnswers().get(2).getAnswer(), validatedListOfAnswers.get(2).getAnswer()),
+                    () -> assertEquals(listOfQuestions.get(finalI).getQuestion(), validatedQuestion),
+                    () -> assertEquals(listOfQuestions.get(finalI).getListOfAnswers().get(0).getAnswer(), validatedListOfAnswers.get(0).getAnswer()),
+                    () -> assertEquals(listOfQuestions.get(finalI).getListOfAnswers().get(1).getAnswer(), validatedListOfAnswers.get(1).getAnswer()),
+                    () -> assertEquals(listOfQuestions.get(finalI).getListOfAnswers().get(2).getAnswer(), validatedListOfAnswers.get(2).getAnswer()),
 
-                    () -> assertEquals(LIST_OF_QUESTIONS.get(finalI).getListOfAnswers().get(0).isCorrect(), validatedListOfAnswers.get(0).isCorrect()),
-                    () -> assertEquals(LIST_OF_QUESTIONS.get(finalI).getListOfAnswers().get(1).isCorrect(), validatedListOfAnswers.get(1).isCorrect()),
-                    () -> assertEquals(LIST_OF_QUESTIONS.get(finalI).getListOfAnswers().get(2).isCorrect(), validatedListOfAnswers.get(2).isCorrect())
+                    () -> assertEquals(listOfQuestions.get(finalI).getListOfAnswers().get(0).isCorrect(), validatedListOfAnswers.get(0).isCorrect()),
+                    () -> assertEquals(listOfQuestions.get(finalI).getListOfAnswers().get(1).isCorrect(), validatedListOfAnswers.get(1).isCorrect()),
+                    () -> assertEquals(listOfQuestions.get(finalI).getListOfAnswers().get(2).isCorrect(), validatedListOfAnswers.get(2).isCorrect())
             );
         }
     }

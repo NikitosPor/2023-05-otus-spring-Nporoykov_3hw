@@ -2,7 +2,7 @@ package ru.otus.spgboot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.spgboot.configs.AppLocalizedProps;
+import ru.otus.spgboot.helpers.LocalizedPropsProvider;
 import ru.otus.spgboot.dao.QuestionDao;
 import ru.otus.spgboot.domain.Answer;
 import ru.otus.spgboot.domain.Question;
@@ -16,13 +16,15 @@ public class QuestionAskServiceImpl implements QuestionAskService {
 
     private final IOService ioService;
 
-    private final AppLocalizedProps appLocalizedProps;
+    private final LocalizedPropsProvider localizedPropsProvider;
 
     @Autowired
-    public QuestionAskServiceImpl(QuestionDao questionDao, IOService ioService, AppLocalizedProps appLocalizedProps) {
+    public QuestionAskServiceImpl(QuestionDao questionDao,
+                                  IOService ioService,
+                                  LocalizedPropsProvider localizedPropsProvider) {
         this.questionDao = questionDao;
         this.ioService = ioService;
-        this.appLocalizedProps = appLocalizedProps;
+        this.localizedPropsProvider = localizedPropsProvider;
     }
 
     public int askAllQuestionsAndReturnCounter() {
@@ -48,7 +50,7 @@ public class QuestionAskServiceImpl implements QuestionAskService {
         string.append(question.getQuestion()).append(" ");
         listOfAnswers.forEach(answer -> string.append(answer.getAnswer()).append(" "));
         ioService.outputString(string.toString());
-        ioService.outputString(appLocalizedProps.getLocalizedProperty("properties.input.answer"));
+        ioService.outputString(localizedPropsProvider.getLocalizedProperty("properties.input.answer"));
     }
 
     private int getCountOfRightAnswers(List<Answer> listOfAnswers, String enteredAnswer) {

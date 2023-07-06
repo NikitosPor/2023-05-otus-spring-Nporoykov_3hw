@@ -2,7 +2,7 @@ package ru.otus.spgboot.service;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
-import ru.otus.spgboot.configs.AppLocalizedProps;
+import ru.otus.spgboot.helpers.LocalizedPropsProvider;
 import ru.otus.spgboot.domain.TestResult;
 import ru.otus.spgboot.exceptions.QuestionsReadingException;
 import ru.otus.spgboot.helpers.IOService;
@@ -12,7 +12,7 @@ import java.io.IOException;
 @Service
 public class AppRunService implements CommandLineRunner {
 
-    private final AppLocalizedProps appLocalizedProps;
+    private final LocalizedPropsProvider localizedPropsProvider;
 
     private final IOService ioService;
 
@@ -23,12 +23,12 @@ public class AppRunService implements CommandLineRunner {
     private final StudentCreationService studentCreationService;
 
     public AppRunService(QuestionAskService questionAskService,
-                         AppLocalizedProps appLocalizedProps,
+                         LocalizedPropsProvider localizedPropsProvider,
                          IOService ioService,
                          ResultsOutputService resultsOutputService,
                          StudentCreationService studentCreationService) {
         this.questionAskService = questionAskService;
-        this.appLocalizedProps = appLocalizedProps;
+        this.localizedPropsProvider = localizedPropsProvider;
         this.ioService = ioService;
         this.resultsOutputService = resultsOutputService;
         this.studentCreationService = studentCreationService;
@@ -39,11 +39,11 @@ public class AppRunService implements CommandLineRunner {
             TestResult testResult = new TestResult();
             testResult.setStudent(studentCreationService.askNameAndCreateStudent());
             testResult.setRightAnswerCounter(questionAskService.askAllQuestionsAndReturnCounter());
-            resultsOutputService.printResults(testResult, appLocalizedProps.getMinRightQuestionsCount());
+            resultsOutputService.printResults(testResult);
         } catch (QuestionsReadingException e) {
             Throwable cause = e.getCause();
             if (cause instanceof IOException ioException) {
-                ioService.outputString(appLocalizedProps.getLocalizedProperty("properties.output.file.error"));
+                ioService.outputString(localizedPropsProvider.getLocalizedProperty("properties.output.file.error"));
                 ioException.printStackTrace(); // тут как я понимаю логирование вместо этого надо
             }
         }

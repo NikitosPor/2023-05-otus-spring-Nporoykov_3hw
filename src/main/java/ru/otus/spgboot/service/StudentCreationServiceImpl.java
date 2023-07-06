@@ -1,7 +1,7 @@
 package ru.otus.spgboot.service;
 
 import org.springframework.stereotype.Service;
-import ru.otus.spgboot.configs.AppLocalizedProps;
+import ru.otus.spgboot.helpers.LocalizedPropsProvider;
 import ru.otus.spgboot.domain.Student;
 import ru.otus.spgboot.helpers.IOService;
 
@@ -10,18 +10,18 @@ public class StudentCreationServiceImpl implements StudentCreationService {
 
     private final IOService ioService;
 
-    private final AppLocalizedProps appLocalizedProps;
+    private final LocalizedPropsProvider localizedPropsProvider;
 
-    public StudentCreationServiceImpl(IOService ioService, AppLocalizedProps appLocalizedProps) {
+    public StudentCreationServiceImpl(IOService ioService, LocalizedPropsProvider localizedPropsProvider) {
         this.ioService = ioService;
-        this.appLocalizedProps = appLocalizedProps;
+        this.localizedPropsProvider = localizedPropsProvider;
     }
 
     public Student askNameAndCreateStudent() {
 
-        ioService.outputString(appLocalizedProps.getLocalizedProperty("properties.input.name"));
+        ioService.outputString(localizedPropsProvider.getLocalizedProperty("properties.input.name"));
         String name = ioService.readString();
-        ioService.outputString(appLocalizedProps.getLocalizedProperty("properties.input.surename"));
+        ioService.outputString(localizedPropsProvider.getLocalizedProperty("properties.input.surename"));
         String sureName = ioService.readString();
 
         return new Student(name, sureName);

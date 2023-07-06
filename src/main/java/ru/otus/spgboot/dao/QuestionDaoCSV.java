@@ -1,7 +1,9 @@
 package ru.otus.spgboot.dao;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import ru.otus.spgboot.configs.AppProps;
+import ru.otus.spgboot.configs.SourceFilePathProvider;
 import ru.otus.spgboot.domain.Answer;
 import ru.otus.spgboot.domain.Question;
 import ru.otus.spgboot.exceptions.QuestionsReadingException;
@@ -14,13 +16,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+@EnableConfigurationProperties(AppProps.class)
 @Component
 public class QuestionDaoCSV implements QuestionDao {
 
-    private final AppProps appProps;
+    private final SourceFilePathProvider sourceFilePathProvider;
 
-    public QuestionDaoCSV(AppProps appProps) {
-        this.appProps = appProps;
+    public QuestionDaoCSV(SourceFilePathProvider sourceFilePathProvider) {
+        this.sourceFilePathProvider = sourceFilePathProvider;
     }
 
     private void parseStringLine(String stringLine, List<Question> listOfQuestionsWithAnswers) {
@@ -43,7 +46,8 @@ public class QuestionDaoCSV implements QuestionDao {
         List<Question> listOfQuestionsWithAnswers = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
-                        Objects.requireNonNull(this.getClass().getResourceAsStream(appProps.getSourceFilePath()))))) {
+                        Objects.requireNonNull(this.getClass()
+                                .getResourceAsStream(sourceFilePathProvider.getSourceFilePath()))))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 parseStringLine(line, listOfQuestionsWithAnswers);

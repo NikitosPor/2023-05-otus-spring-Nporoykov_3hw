@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import java.util.Locale;
 
 @ConfigurationProperties(prefix = "application")
-public class AppProps {
+public class AppProps implements SourceFilePathProvider, MinRightCountProvider, LocaleProvider {
 
     private final Locale locale;
 

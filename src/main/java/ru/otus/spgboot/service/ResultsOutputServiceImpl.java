@@ -1,7 +1,8 @@
 package ru.otus.spgboot.service;
 
 import org.springframework.stereotype.Service;
-import ru.otus.spgboot.configs.AppLocalizedProps;
+import ru.otus.spgboot.helpers.LocalizedPropsProvider;
+import ru.otus.spgboot.configs.MinRightCountProvider;
 import ru.otus.spgboot.domain.TestResult;
 import ru.otus.spgboot.helpers.IOService;
 
@@ -10,23 +11,28 @@ import ru.otus.spgboot.helpers.IOService;
 public class ResultsOutputServiceImpl implements ResultsOutputService {
     private final IOService ioService;
 
-    private final AppLocalizedProps appLocalizedProps;
+    private final LocalizedPropsProvider localizedPropsProvider;
 
-    public ResultsOutputServiceImpl(IOService ioService, AppLocalizedProps appLocalizedProps) {
+    private final MinRightCountProvider minRightCountProvider;
+
+    public ResultsOutputServiceImpl(IOService ioService,
+                                    LocalizedPropsProvider localizedPropsProvider,
+                                    MinRightCountProvider minRightCountProvider) {
         this.ioService = ioService;
-        this.appLocalizedProps = appLocalizedProps;
+        this.localizedPropsProvider = localizedPropsProvider;
+        this.minRightCountProvider = minRightCountProvider;
     }
 
-    public void printResults(TestResult testResult, int minRightAnswers) {
+    public void printResults(TestResult testResult) {
         String localizedSting;
         ioService.outputString(testResult.getStudent().getFullName() +
-                appLocalizedProps.getLocalizedProperty("properties.output.exam.result",
+                localizedPropsProvider.getLocalizedProperty("properties.output.exam.result",
                         new Integer[]{testResult.getRightAnswerCounter()}));
-        if (testResult.getRightAnswerCounter() < minRightAnswers) {
-            localizedSting = appLocalizedProps.getLocalizedProperty("properties.output.exam.negative");
+        if (testResult.getRightAnswerCounter() < minRightCountProvider.getMinRightCount()) {
+            localizedSting = localizedPropsProvider.getLocalizedProperty("properties.output.exam.negative");
             ioService.outputString(localizedSting);
         } else {
-            localizedSting = appLocalizedProps.getLocalizedProperty("properties.output.exam.positive");
+            localizedSting = localizedPropsProvider.getLocalizedProperty("properties.output.exam.positive");
             ioService.outputString(localizedSting);
         }
     }
